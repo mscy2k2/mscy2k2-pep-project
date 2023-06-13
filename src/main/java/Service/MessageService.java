@@ -41,13 +41,11 @@ public class MessageService {
             return messageDAO.getMessageById(message_id);
     }
 
-    public Message removeMessage(int message_id, Message message){
+    public Message removeMessage(int message_id){
         if (messageDAO.getMessageById(message_id) == null){
             return null;
         }
-        else{
-            messageDAO.deleteMessage(message_id, message);
-        }            
+                   
             return messageDAO.getMessageById(message_id);
     }
 }

@@ -124,7 +124,7 @@ public class MessageDAO {
         }
     }
 
-    public void deleteMessage(int id, Message message){
+    public void deleteMessage(int id){
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "DELETE FROM message WHERE message_id = ?";

@@ -2,7 +2,7 @@ package Controller;
 
 import Model.Account;
 import Model.Message;
-//import Service.AccountService;
+import Service.AccountService;
 import Service.MessageService;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
@@ -21,11 +21,11 @@ import java.util.List;
  */
 public class SocialMediaController {
     MessageService messageService;
-    //AccountService accountService;
+    AccountService accountService;
 
     public SocialMediaController(){
         this.messageService = new MessageService();
-       // this.accountService = new AccountService();
+        this.accountService = new AccountService();
     }
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
@@ -41,7 +41,8 @@ public class SocialMediaController {
         app.patch("/messages/{message_id}", this::updateMessageHandler);
         app.delete("/messages/{message_id}", this::deleteMessageHandler);
         //app.get("/accounts", this::getAllAccountsHandler);
-       // app.post("/accounts", this::postAccountHandler);
+        app.post("/register", this::postAccountHandler);
+        app.post("/login", this::getAccountByIdHandler);
         //app.get("/books/available", this::getAvailableBooksHandler);
 
         return app;
@@ -101,20 +102,25 @@ public class SocialMediaController {
         }else
             ctx.json(messag);
     }
-    
-/* 
-    private void deleteMessageHandler(Context ctx) throws JsonProcessingException {
+
+    private void postAccountHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Message message = mapper.readValue(ctx.body(), Message.class);
-        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
-        Message deletedMessage = messageService.removeMessage(message_id, message);
-        System.out.println(deletedMessage);
-        if(deletedMessage == null){
-            ctx.status(200);
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account addedAccount = accountService.addAccount(account);
+        if(addedAccount == null || addedAccount.password.length() <= 4 || addedAccount.username.equals("")){
+            ctx.status(400);
         }else{
-            ctx.json(mapper.writeValueAsString(deletedMessage));
+            ctx.json(mapper.writeValueAsString(addedAccount));
         }
     }
-*/
+
+    public void getAccountByIdHandler(Context ctx){
+        int account_id = Integer.parseInt(ctx.pathParam("account_id"));
+        Account accountss = accountService.RetrieveAccountById(account_id);
+        if(accountss == null){
+            accountss = null;
+        }else
+            ctx.json(accountss);
+    }
 
 }
