@@ -32,26 +32,19 @@ public class MessageService {
     }
 
     public Message updateMessage(int message_id, Message message){
-        if (messageDAO.getMessageById(message_id) == null){
-            return null;
-        }
-        else{
-            messageDAO.updateMessage(message_id, message);
-        }            
-            return messageDAO.getMessageById(message_id);
+        
+        messageDAO.updateMessage(message_id, message);
+                    
+        return messageDAO.getMessageById(message_id);
     }
 
-    public Message removeMessage(int message_id){
-        if (messageDAO.getMessageById(message_id) == null){
-            return null;
-        }          
-            return messageDAO.getMessageById(message_id);
+    public Message removeMessage(int message_id){         
+            
+        return messageDAO.getMessageById(message_id);
     }
 
-    public List<Message> getAllMessagesUser() {
-       if (messageDAO.getAllMessagesByUser() == null){
-            return null;
-        }
-        return messageDAO.getAllMessagesByUser();
+    public List<Message> getAllMessagesUser(int userId) {
+       
+        return messageDAO.getAllMessagesByUser(userId);
     }
 }

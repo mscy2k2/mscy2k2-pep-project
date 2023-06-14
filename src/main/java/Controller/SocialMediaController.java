@@ -5,7 +5,6 @@ import Model.Message;
 import Service.AccountService;
 import Service.MessageService;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
@@ -40,9 +39,8 @@ public class SocialMediaController {
         app.post("/messages", this::postMessageHandler);
         app.patch("/messages/{message_id}", this::updateMessageHandler);
         app.delete("/messages/{message_id}", this::deleteMessageHandler);
-        //app.get("/accounts", this::getAllAccountsHandler);
         app.post("/register", this::postAccountHandler);
-        app.post("/login", this::getUserLoginHandler);
+        app.post("/login", this::postUserLoginHandler);
         app.get("/accounts/{account_id}/messages", this::getAllMessagesByUserHandler);
 
         return app;
@@ -114,7 +112,7 @@ public class SocialMediaController {
         }
     }
 
-    public void getUserLoginHandler(Context ctx)throws JsonProcessingException {
+    public void postUserLoginHandler(Context ctx)throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
         Account accountss = accountService.RetrieveUserLogin(account);
@@ -125,11 +123,9 @@ public class SocialMediaController {
     }
 
     public void getAllMessagesByUserHandler(Context ctx){
-        List<Message> msg = messageService.getAllMessagesUser();
-        if(msg == null){
-            msg.isEmpty();
-        }else
-            ctx.json(msg);
+        int id = Integer.parseInt(ctx.pathParam("account_id"));
+        List<Message> msg = messageService.getAllMessagesUser(id);
+        ctx.json(msg).status(200);
     }
 
 }
