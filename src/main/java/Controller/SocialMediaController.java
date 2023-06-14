@@ -126,8 +126,8 @@ public class SocialMediaController {
 
     public void getAllMessagesByUserHandler(Context ctx){
         List<Message> msg = messageService.getAllMessagesUser();
-        if(msg.isEmpty()){
-            msg = null;
+        if(msg == null){
+            msg.isEmpty();
         }else
             ctx.json(msg);
     }
