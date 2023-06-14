@@ -49,7 +49,7 @@ public class MessageService {
     }
 
     public List<Message> getAllMessagesUser() {
-        if (messageDAO.getAllMessagesByUser() == null){
+       if (messageDAO.getAllMessagesByUser() == null){
             return null;
         }
         return messageDAO.getAllMessagesByUser();

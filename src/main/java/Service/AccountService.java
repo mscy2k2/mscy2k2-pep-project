@@ -22,9 +22,9 @@ public class AccountService {
         return insertedAccount;
     }
 
-    public Account RetrieveAccountById(int account_id){
-        Account accountById = accountDAO.getAccountById(account_id);
-        return accountById;
+    public Account RetrieveUserLogin(Account acctt){
+        Account accountLogin = accountDAO.processUserLogin(acctt);
+        return accountLogin;
     }
     
 }

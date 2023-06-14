@@ -42,7 +42,7 @@ public class SocialMediaController {
         app.delete("/messages/{message_id}", this::deleteMessageHandler);
         //app.get("/accounts", this::getAllAccountsHandler);
         app.post("/register", this::postAccountHandler);
-        app.post("/login", this::getAccountByIdHandler);
+        app.post("/login", this::getUserLoginHandler);
         app.get("/accounts/{account_id}/messages", this::getAllMessagesByUserHandler);
 
         return app;
@@ -114,18 +114,19 @@ public class SocialMediaController {
         }
     }
 
-    public void getAccountByIdHandler(Context ctx){
-        int account_id = Integer.parseInt(ctx.pathParam("account_id"));
-        Account accountss = accountService.RetrieveAccountById(account_id);
+    public void getUserLoginHandler(Context ctx)throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account accountss = accountService.RetrieveUserLogin(account);
         if(accountss == null){
             ctx.status(401);
         }else
-            ctx.json(accountss);
+            ctx.json(mapper.writeValueAsString(accountss));
     }
 
     public void getAllMessagesByUserHandler(Context ctx){
         List<Message> msg = messageService.getAllMessagesUser();
-        if(msg == null){
+        if(msg.isEmpty()){
             msg = null;
         }else
             ctx.json(msg);

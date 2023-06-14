@@ -143,7 +143,7 @@ public class MessageDAO {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM message INNER JOIN account ON message.message_id = account.account_id";
+            String sql = "SELECT * FROM message JOIN account ON message.posted_by = account.account_id";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){

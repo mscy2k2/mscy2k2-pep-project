@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jetty.util.security.Password;
+
 public class AccountDAO {
     public Account insertAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
@@ -34,14 +36,15 @@ public class AccountDAO {
         return null;
     }
 
-    public Account getAccountById(int id){
+    public Account processUserLogin(Account acct){
         Connection connection = ConnectionUtil.getConnection();
         try {
-            String sql = "SELECT * FROM account WHERE account_id = ?";
+            String sql = "select * from account where username = ? and password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             //write preparedStatement's setInt method here.
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, acct.getUsername());
+            preparedStatement.setString(2,acct.getPassword());
 
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
