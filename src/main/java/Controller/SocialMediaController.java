@@ -43,7 +43,7 @@ public class SocialMediaController {
         //app.get("/accounts", this::getAllAccountsHandler);
         app.post("/register", this::postAccountHandler);
         app.post("/login", this::getAccountByIdHandler);
-        //app.get("/books/available", this::getAvailableBooksHandler);
+        app.get("/accounts/{account_id}/messages", this::getAllMessagesByUserHandler);
 
         return app;
     }
@@ -118,9 +118,17 @@ public class SocialMediaController {
         int account_id = Integer.parseInt(ctx.pathParam("account_id"));
         Account accountss = accountService.RetrieveAccountById(account_id);
         if(accountss == null){
-            accountss = null;
+            ctx.status(401);
         }else
             ctx.json(accountss);
+    }
+
+    public void getAllMessagesByUserHandler(Context ctx){
+        List<Message> msg = messageService.getAllMessagesUser();
+        if(msg == null){
+            msg = null;
+        }else
+            ctx.json(msg);
     }
 
 }

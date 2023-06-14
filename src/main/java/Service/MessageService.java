@@ -44,8 +44,14 @@ public class MessageService {
     public Message removeMessage(int message_id){
         if (messageDAO.getMessageById(message_id) == null){
             return null;
-        }
-                   
+        }          
             return messageDAO.getMessageById(message_id);
+    }
+
+    public List<Message> getAllMessagesUser() {
+        if (messageDAO.getAllMessagesByUser() == null){
+            return null;
+        }
+        return messageDAO.getAllMessagesByUser();
     }
 }
